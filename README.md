@@ -1,7 +1,7 @@
 # slLog: Simple Levels Logging in Go
  Golang Logging Levels like Spring boot configuration.
  
- Defines default(ROOT), personalizeds, and inheritances levels.
+ Defines default(ROOT), personalizeds, and loggers hierarchy.
 
 ## Installing
 
