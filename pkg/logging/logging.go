@@ -17,7 +17,7 @@ type LoggerWriterOut struct {
 }
 
 // LoggerWriterOut send message to logging
-func (l *LoggerWriterOut) write(message string, v ...interface{}) {
+func (l LoggerWriterOut) write(message string, v ...interface{}) {
 	log.Printf(l.level+" "+l.name+" "+message, v...)
 }
 
@@ -26,7 +26,7 @@ type LoggerWriterDiscard struct {
 }
 
 // Discards messages
-func (l *LoggerWriterDiscard) write(message string, v ...interface{}) {
+func (l LoggerWriterDiscard) write(message string, v ...interface{}) {
 }
 
 // Logger allows logging
@@ -58,12 +58,12 @@ func NewLogger(name string, config map[string]string) Logger {
 
 	logger := Logger{
 		name:         name,
-		traceLoggger: &LoggerWriterDiscard{},
-		debugLoggger: &LoggerWriterDiscard{},
-		infoLoggger:  &LoggerWriterDiscard{},
-		warnLoggger:  &LoggerWriterDiscard{},
-		errorLoggger: &LoggerWriterDiscard{},
-		fatalLoggger: &LoggerWriterDiscard{},
+		traceLoggger: LoggerWriterDiscard{},
+		debugLoggger: LoggerWriterDiscard{},
+		infoLoggger:  LoggerWriterDiscard{},
+		warnLoggger:  LoggerWriterDiscard{},
+		errorLoggger: LoggerWriterDiscard{},
+		fatalLoggger: LoggerWriterDiscard{},
 		level:        loggerLevel,
 	}
 
@@ -73,94 +73,94 @@ func NewLogger(name string, config map[string]string) Logger {
 
 	if level == "TRACE" {
 		logger.isTraceEnabled = true
-		logger.traceLoggger = &LoggerWriterOut{name: name, level: "TRACE"}
+		logger.traceLoggger = LoggerWriterOut{name: name, level: "TRACE"}
 	}
 
 	if level == "DEBUG" || logger.isTraceEnabled {
 		logger.isDebugEnabled = true
-		logger.debugLoggger = &LoggerWriterOut{name: name, level: "DEBUG"}
+		logger.debugLoggger = LoggerWriterOut{name: name, level: "DEBUG"}
 	}
 
 	if level == "INFO" || logger.isDebugEnabled {
 		logger.isInfoEnabled = true
-		logger.infoLoggger = &LoggerWriterOut{name: name, level: "INFO"}
+		logger.infoLoggger = LoggerWriterOut{name: name, level: "INFO"}
 	}
 
 	if level == "WARN" || logger.isInfoEnabled {
 		logger.isWarnEnabled = true
-		logger.warnLoggger = &LoggerWriterOut{name: name, level: "WARN"}
+		logger.warnLoggger = LoggerWriterOut{name: name, level: "WARN"}
 	}
 
 	if level == "ERROR" || logger.isWarnEnabled {
 		logger.isErrorEnabled = true
-		logger.errorLoggger = &LoggerWriterOut{name: name, level: "ERROR"}
+		logger.errorLoggger = LoggerWriterOut{name: name, level: "ERROR"}
 	}
 
 	if level == "FATAL" || logger.isErrorEnabled {
 		logger.isFatalEnabled = true
-		logger.fatalLoggger = &LoggerWriterOut{name: name, level: "FATAL"}
+		logger.fatalLoggger = LoggerWriterOut{name: name, level: "FATAL"}
 	}
 
 	return logger
 }
 
 // IsTraceEnabled -
-func (l *Logger) IsTraceEnabled() bool {
+func (l Logger) IsTraceEnabled() bool {
 	return l.isTraceEnabled
 }
 
 // IsDebugEnabled -
-func (l *Logger) IsDebugEnabled() bool {
+func (l Logger) IsDebugEnabled() bool {
 	return l.isDebugEnabled
 }
 
 // IsInfoEnabled -
-func (l *Logger) IsInfoEnabled() bool {
+func (l Logger) IsInfoEnabled() bool {
 	return l.isInfoEnabled
 }
 
 //IsWarnEnabled -
-func (l *Logger) IsWarnEnabled() bool {
+func (l Logger) IsWarnEnabled() bool {
 	return l.isWarnEnabled
 }
 
 // IsErrorEnabled -
-func (l *Logger) IsErrorEnabled() bool {
+func (l Logger) IsErrorEnabled() bool {
 	return l.isErrorEnabled
 }
 
 // IsFatalEnabled -
-func (l *Logger) IsFatalEnabled() bool {
+func (l Logger) IsFatalEnabled() bool {
 	return l.isFatalEnabled
 }
 
 // Fatalf - fatal
-func (l *Logger) Fatalf(message string, v ...interface{}) {
+func (l Logger) Fatalf(message string, v ...interface{}) {
 	l.fatalLoggger.write(message, v...)
 }
 
 // Errorf - erro
-func (l *Logger) Errorf(message string, v ...interface{}) {
+func (l Logger) Errorf(message string, v ...interface{}) {
 	l.errorLoggger.write(message, v...)
 }
 
 // Warnf - debug
-func (l *Logger) Warnf(message string, v ...interface{}) {
+func (l Logger) Warnf(message string, v ...interface{}) {
 	l.warnLoggger.write(message, v...)
 }
 
 // Infof - info
-func (l *Logger) Infof(message string, v ...interface{}) {
+func (l Logger) Infof(message string, v ...interface{}) {
 	l.infoLoggger.write(message, v...)
 }
 
 // Debugf - debug
-func (l *Logger) Debugf(message string, v ...interface{}) {
+func (l Logger) Debugf(message string, v ...interface{}) {
 	l.debugLoggger.write(message, v...)
 }
 
 // Tracef - trace
-func (l *Logger) Tracef(message string, v ...interface{}) {
+func (l Logger) Tracef(message string, v ...interface{}) {
 	l.traceLoggger.write(message, v...)
 }
 
